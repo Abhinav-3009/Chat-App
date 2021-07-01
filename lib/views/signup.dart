@@ -52,6 +52,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: textFieldInputDecoration('Email'),
                     ),
                     TextFormField(
+                      obscureText: true,
                       validator: (val){
                         return  val.length > 6 ?  null : "Password should be of atleast 6 characters";
                       },
