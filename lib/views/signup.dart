@@ -1,4 +1,5 @@
 import 'package:chat_app/services/auth.dart';
+import 'package:chat_app/services/database.dart';
 import 'package:chat_app/views/chatroom.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   bool isLoading = false;
   AuthMethods authMethod = new AuthMethods();
+  DataBaseMethods dataBaseMethods = new DataBaseMethods();
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController =
       new TextEditingController();
@@ -22,15 +24,24 @@ class _SignUpState extends State<SignUp> {
       new TextEditingController();
 
   signMeUp() {
+    Map<String, String> userInfoMap = {
+      "name": userNameTextEditingController.text,
+      "email": emailTextEditingController.text,
+    };
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
-      authMethod.signUpWithEmailAndPassword(
-          emailTextEditingController.text, passwordTextEditingController.text).then((val){
-            //print("${val.uid}");
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatRoom()));
-          });
+      authMethod
+          .signUpWithEmailAndPassword(emailTextEditingController.text,
+              passwordTextEditingController.text)
+          .then((val) {
+        //print("${val.uid}");
+
+        dataBaseMethods.uploadUserInfo(userInfoMap);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+      });
     }
   }
 
@@ -158,10 +169,10 @@ class _SignUpState extends State<SignUp> {
                           style: TextStyle(fontSize: 15),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             widget.toggle();
                           },
-                                                  child: Container(
+                          child: Container(
                             padding: EdgeInsets.symmetric(vertical: 8),
                             child: Text(
                               "Sign in",
