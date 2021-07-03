@@ -23,18 +23,28 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  Widget searchList() {
-    return searchSnapshot != null ? ListView.builder(
-      itemCount: searchSnapshot.documents.length,
-      shrinkWrap: true,
-      itemBuilder: (context, ind) {
-        return SearchTile(
-          userName: searchSnapshot.documents[ind].data["name"],
-          userEmail: searchSnapshot.documents[ind].data["email"],
-        );
-      },
-    ) : Container();
+  createChatRoomAndStartConversation(String username){
+    List<String> users=[
+      username,
+    ];
+    //dataBaseMethods.createChatRoom()
   }
+
+  Widget searchList() {
+    return searchSnapshot != null
+        ? ListView.builder(
+            itemCount: searchSnapshot.documents.length,
+            shrinkWrap: true,
+            itemBuilder: (context, ind) {
+              return SearchTile(
+                userName: searchSnapshot.documents[ind].data["name"],
+                userEmail: searchSnapshot.documents[ind].data["email"],
+              );
+            },
+          )
+        : Container();
+  }
+
   @override
   void initState() {
     initiateSearch();
@@ -60,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         border: InputBorder.none,
                         hintText: "Search Username.."),
                   )),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       initiateSearch();
                     },
@@ -99,14 +109,23 @@ class SearchTile extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Container(
-            width: 100,
-            height: 35,
-            child: Center(child: Text("Chat",style: TextStyle(fontSize: 17),)),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-                color: Colors.blue[200],
-                borderRadius: BorderRadius.circular(15)),
+          GestureDetector(
+            onTap: (){
+
+            },
+            child: Container(
+              width: 100,
+              height: 35,
+              child: Center(
+                  child: Text(
+                "Chat",
+                style: TextStyle(fontSize: 17),
+              )),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                  color: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(15)),
+            ),
           )
         ],
       ),

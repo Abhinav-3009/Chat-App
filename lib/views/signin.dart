@@ -9,6 +9,10 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  TextEditingController emailTextEditingController =
+      new TextEditingController();
+  TextEditingController passwordTextEditingController =
+      new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,11 +26,17 @@ class _SignInState extends State<SignIn> {
                 height: 15,
               ),
               Image.asset("assets/images/sign_in_image1.png"),
-              TextField(
-                decoration: textFieldInputDecoration('Email'),
-              ),
-              TextField(
-                decoration: textFieldInputDecoration('Password'),
+              Column(
+                children: [
+                  TextField(
+                    controller: emailTextEditingController,
+                    decoration: textFieldInputDecoration('Email'),
+                  ),
+                  TextField(
+                    controller: passwordTextEditingController,
+                    decoration: textFieldInputDecoration('Password'),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 8,
@@ -94,7 +104,7 @@ class _SignInState extends State<SignIn> {
                     style: TextStyle(fontSize: 15),
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       widget.toggle();
                     },
                     child: Container(

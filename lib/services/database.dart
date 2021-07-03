@@ -11,4 +11,14 @@ class DataBaseMethods {
   uploadUserInfo(userMap) {
     Firestore.instance.collection("users").add(userMap);
   }
+
+  createChatRoom(String chatRoomId, chatRoomMap) {
+    Firestore.instance
+        .collection('chatRoom')
+        .document(chatRoomId)
+        .setData(chatRoomMap)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 }
