@@ -110,7 +110,9 @@ class _SignInState extends State<SignIn> {
                 height: 10,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  signIn();
+                },
                 child: Container(
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,
