@@ -39,7 +39,8 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
   createChatRoomAndStartConversation({String username}){
-    String chatRoomId = getChatRoomId(username,Constants.MyName);
+    if(username!=Constants.MyName){
+      String chatRoomId = getChatRoomId(username,Constants.MyName);
     List<String> users=[
       username,Constants.MyName
     ];
@@ -49,6 +50,10 @@ class _SearchScreenState extends State<SearchScreen> {
     };
     DataBaseMethods().createChatRoom(chatRoomId,chatRoomMap);
     Navigator.push(context, MaterialPageRoute(builder: (context)=>ConversationScreen()));
+    }
+    else{
+      print("no chatting with yourself");
+    }
   }
   Widget SearchTile({String userName, String userEmail}){
     return Container(
