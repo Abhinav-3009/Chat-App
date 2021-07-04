@@ -29,9 +29,11 @@ class _SignUpState extends State<SignUp> {
       "name": userNameTextEditingController.text,
       "email": emailTextEditingController.text,
     };
-    
-    HelperFunctions.saveUserEmailSharedPreferene(emailTextEditingController.text);
-    HelperFunctions.saveUserNameSharedPreferene(userNameTextEditingController.text);
+
+    HelperFunctions.saveUserEmailSharedPreferene(
+        emailTextEditingController.text);
+    HelperFunctions.saveUserNameSharedPreferene(
+        userNameTextEditingController.text);
 
     if (formKey.currentState.validate()) {
       setState(() {
@@ -40,14 +42,16 @@ class _SignUpState extends State<SignUp> {
       authMethod
           .signUpWithEmailAndPassword(emailTextEditingController.text,
               passwordTextEditingController.text)
-          .then((val) {
-        //print("${val.uid}");
+          .then(
+        (val) {
+          //print("${val.uid}");
 
-        dataBaseMethods.uploadUserInfo(userInfoMap);
-        HelperFunctions.saveUserLoggedInSharedPreferene(true);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ChatRoom()));
-      });
+          dataBaseMethods.uploadUserInfo(userInfoMap);
+          HelperFunctions.saveUserLoggedInSharedPreferene(true);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        },
+      );
     }
   }
 

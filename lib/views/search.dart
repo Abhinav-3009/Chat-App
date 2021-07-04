@@ -1,4 +1,6 @@
+import 'package:chat_app/helper/constants.dart';
 import 'package:chat_app/services/database.dart';
+import 'package:chat_app/views/conversation.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -13,23 +15,6 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchTextEditingController =
       new TextEditingController();
   QuerySnapshot searchSnapshot;
-  initiateSearch() {
-    dataBaseMethods
-        .getUserByUsername(searchTextEditingController.text)
-        .then((val) {
-      setState(() {
-        searchSnapshot = val;
-      });
-    });
-  }
-
-  createChatRoomAndStartConversation(String username){
-    List<String> users=[
-      username,
-    ];
-    //dataBaseMethods.createChatRoom()
-  }
-
   Widget searchList() {
     return searchSnapshot != null
         ? ListView.builder(
@@ -43,6 +28,62 @@ class _SearchScreenState extends State<SearchScreen> {
             },
           )
         : Container();
+  }
+  initiateSearch() {
+    dataBaseMethods
+        .getUserByUsername(searchTextEditingController.text)
+        .then((val) {
+      setState(() {
+        searchSnapshot = val;
+      });
+    });
+  }
+  createChatRoomAndStartConversation({String username}){
+    String chatRoomId = getChatRoomId(username,Constants.MyName);
+    List<String> users=[
+      username,Constants.MyName
+    ];
+    Map<String,dynamic> chatRoomMap = {
+      "users":users,
+      "chatroomid":chatRoomId
+    };
+    DataBaseMethods().createChatRoom(chatRoomId,chatRoomMap);
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>ConversationScreen()));
+  }
+  Widget SearchTile({String userName, String userEmail}){
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(userName),
+              Text(userEmail),
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: (){
+              createChatRoomAndStartConversation(username: userName);
+            },
+            child: Container(
+              width: 100,
+              height: 35,
+              child: Center(
+                  child: Text(
+                "Chat",
+                style: TextStyle(fontSize: 17),
+              )),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                  color: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(15)),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -91,44 +132,13 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class SearchTile extends StatelessWidget {
-  final String userName;
-  final String userEmail;
-  SearchTile({this.userName, this.userEmail});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(userName),
-              Text(userEmail),
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: (){
 
-            },
-            child: Container(
-              width: 100,
-              height: 35,
-              child: Center(
-                  child: Text(
-                "Chat",
-                style: TextStyle(fontSize: 17),
-              )),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                  color: Colors.blue[200],
-                  borderRadius: BorderRadius.circular(15)),
-            ),
-          )
-        ],
-      ),
-    );
+  
+
+getChatRoomId(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
-}

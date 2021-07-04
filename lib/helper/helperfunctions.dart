@@ -28,14 +28,14 @@ class HelperFunctions{
     return await prefs.getBool(sharedPreferenceUserLoggedInKey);
   }
 
-  static Future<bool> getUserNameSharedPreferene()async{
+  static Future<String> getUserNameSharedPreferene()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getBool(sharedPreferenceUserNameKey);
+    return await prefs.getString(sharedPreferenceUserNameKey);
   }
 
-  static Future<bool> getUserEmailSharedPreferene()async{
+  static Future<String> getUserEmailSharedPreferene()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getBool(sharedPreferenceUserEmailKey);
+    return await prefs.getString(sharedPreferenceUserEmailKey);
   }
 
 }
