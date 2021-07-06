@@ -16,10 +16,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream chatMessageStream;
   Widget ChatMessageList() {
-    StreamBuilder(
+    return  StreamBuilder  (
       stream: chatMessageStream,
       builder: (context, snapshot) {
-        return ListView.builder(
+        return  ListView.builder(
             itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index) {
               return MessageTile(
@@ -59,6 +59,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children: [
+            ChatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -99,7 +100,7 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(message),
-    );
+      child: Text(message,style: TextStyle(fontSize: 25),),
+    ); 
   }
 }
