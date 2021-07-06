@@ -29,7 +29,7 @@ class DataBaseMethods {
     });
   }
 
-  getConversationMessages(String chatRoomId, messageMap) {
+  addConversationMessages(String chatRoomId, messageMap) {
     Firestore.instance
         .collection("chatRoom")
         .document(chatRoomId)
@@ -38,5 +38,13 @@ class DataBaseMethods {
         .catchError((e) {
       print(e.toString());
     });
+  }
+
+  getConversationMessages(String chatRoomId) async {
+    return await Firestore.instance
+        .collection("chatRoom")
+        .document(chatRoomId)
+        .collection("chats")
+        .snapshots();
   }
 }

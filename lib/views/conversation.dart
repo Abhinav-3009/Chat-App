@@ -14,7 +14,20 @@ class ConversationScreen extends StatefulWidget {
 class _ConversationScreenState extends State<ConversationScreen> {
   DataBaseMethods dataBaseMethods = new DataBaseMethods();
   TextEditingController messageController = new TextEditingController();
-  Widget ChatMessageList() {}
+  Stream chatMessageStream;
+  Widget ChatMessageList() {
+    StreamBuilder(
+      stream: chatMessageStream,
+      builder: (context, snapshot) {
+        return ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) {
+              return MessageTile(
+                  message: snapshot.data.documents[index].data["message"]);
+            });
+      },
+    );
+  }
 
   sendMessage() {
     if (messageController.text.isNotEmpty) {
@@ -22,8 +35,21 @@ class _ConversationScreenState extends State<ConversationScreen> {
         "message": messageController.text,
         "sendBy": Constants.MyName,
       };
-      dataBaseMethods.getConversationMessages(widget.chatRoomId, messageMap);
+      dataBaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
+      setState(() {
+        messageController.text = "";
+      });
     }
+  }
+
+  @override
+  void initState() {
+    dataBaseMethods.getConversationMessages(widget.chatRoomId).then((val) {
+      setState(() {
+        chatMessageStream = val;
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -47,7 +73,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           border: InputBorder.none, hintText: "Type Here..."),
                     )),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        sendMessage();
+                      },
                       child: Container(
                           height: 40,
                           width: 40,
@@ -61,6 +89,17 @@ class _ConversationScreenState extends State<ConversationScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MessageTile extends StatelessWidget {
+  final String message;
+  MessageTile({this.message});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(message),
     );
   }
 }
