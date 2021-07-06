@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   bool userIsLoggedIn=false;
   @override
     void initState() {
-      // TODO: implement initState
+      getLoggedInState();
       super.initState();
     }
 
@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Colors.blue[50],
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn!=null ? userIsLoggedIn? ChatRoom():AUthenticate() : AUthenticate() ,
+      home:  userIsLoggedIn? ChatRoom(): AUthenticate() ,
     );
   }
 }

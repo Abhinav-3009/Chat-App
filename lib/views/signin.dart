@@ -37,7 +37,7 @@ class _SignInState extends State<SignIn> {
       });
       dataBaseMethods.getUserByEmail(emailTextEditingController.text).then((val){
         querySnapshotUserInfo=val;
-        HelperFunctions.saveUserEmailSharedPreferene(querySnapshotUserInfo.documents[0].data["name"]);
+        HelperFunctions.saveUserNameSharedPreferene(querySnapshotUserInfo.documents[0].data["name"]);
       });
       authMethods.signUpWithEmailAndPassword(
           emailTextEditingController.text, passwordTextEditingController.text).then((val){

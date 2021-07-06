@@ -13,14 +13,15 @@ class ChatRoom extends StatefulWidget {
 class _ChatRoomState extends State<ChatRoom> {
   AuthMethods authMethods = new AuthMethods();
   @override
-    void initState() {
-      // TODO: implement initState
-      getUserInfo();
-      super.initState();
-    }
-    getUserInfo() async{
-      Constants.MyName=await HelperFunctions.getUserNameSharedPreferene();
-    }
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+  getUserInfo() async {
+    Constants.MyName = await HelperFunctions.getUserNameSharedPreferene();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
