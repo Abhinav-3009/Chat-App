@@ -49,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
       "chatroomid":chatRoomId
     };
     DataBaseMethods().createChatRoom(chatRoomId,chatRoomMap);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ConversationScreen()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>ConversationScreen(chatRoomId: chatRoomId,)));
     }
     else{
       print("no chatting with yourself");
@@ -93,7 +93,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    initiateSearch();
     super.initState();
   }
 
