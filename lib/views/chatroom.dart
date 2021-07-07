@@ -1,4 +1,4 @@
-import 'dart:js';
+
 
 import 'package:chat_app/helper/authenticate.dart';
 import 'package:chat_app/helper/constants.dart';
@@ -33,6 +33,8 @@ class _ChatRoomState extends State<ChatRoom> {
                           .toString()
                           .replaceAll("_", "")
                           .replaceAll(Constants.MyName, ""),
+                      chatRoomId:
+                          snapshot.data.documents[index].data["chatroomid"],
                     );
                   })
               : Container();
