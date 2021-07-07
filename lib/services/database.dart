@@ -45,6 +45,14 @@ class DataBaseMethods {
         .collection("chatRoom")
         .document(chatRoomId)
         .collection("chats")
+        .orderBy("time")
+        .snapshots();
+  }
+
+  getChatRooms(String userName) {
+    return Firestore.instance
+        .collection("chatRoom")
+        .where("users", arrayContains: userName)
         .snapshots();
   }
 }

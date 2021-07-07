@@ -16,24 +16,30 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream chatMessageStream;
   Widget ChatMessageList() {
-    return  StreamBuilder  (
+    return StreamBuilder(
       stream: chatMessageStream,
       builder: (context, snapshot) {
-        return  ListView.builder(
-            itemCount: snapshot.data.documents.length,
-            itemBuilder: (context, index) {
-              return MessageTile(
-                  message: snapshot.data.documents[index].data["message"]);
-            });
+        return snapshot.hasData
+            ? ListView.builder(
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) {
+                  return MessageTile(
+                      message: snapshot.data.documents[index].data["message"],
+                      isSendByMe:
+                          snapshot.data.documents[index].data["sendBy"] ==
+                              Constants.MyName);
+                })
+            : Container();
       },
     );
   }
 
   sendMessage() {
     if (messageController.text.isNotEmpty) {
-      Map<String, String> messageMap = {
+      Map<String, dynamic> messageMap = {
         "message": messageController.text,
         "sendBy": Constants.MyName,
+        "time": DateTime.now().millisecondsSinceEpoch
       };
       dataBaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
       setState(() {
@@ -96,11 +102,35 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
 class MessageTile extends StatelessWidget {
   final String message;
-  MessageTile({this.message});
+  final bool isSendByMe;
+  MessageTile({this.message, this.isSendByMe});
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(message,style: TextStyle(fontSize: 25),),
-    ); 
+      margin: EdgeInsets.symmetric(vertical: 9,horizontal: 8),
+      width: MediaQuery.of(context).size.width,
+      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 22,vertical: 12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isSendByMe
+                ? [
+                    const Color(0xff007EF4),
+                    const Color(0xff2A75BC),
+                  ]
+                : [
+                    const Color(0xff616161),
+                    const Color(0xff424242),
+                  ], //Colors.grey
+          ),
+          borderRadius: BorderRadius.circular(22)
+        ),
+        child: Text(
+          message,
+          style: TextStyle(fontSize: 22,color: Colors.white),
+        ),
+      ),
+    );
   }
 }
